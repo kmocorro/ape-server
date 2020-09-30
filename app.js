@@ -6,7 +6,7 @@ const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const corsOrigins = require('./config').corsOrigins;
 
-const apiLDAP = require('./controllers/apiLDAP');
+const apiLDAP = require('./controllers/apiLdap');
 const adminLogin = require('./controllers/adminLogin');
 const apiController = require('./controllers/apiController');
  
