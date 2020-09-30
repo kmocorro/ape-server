@@ -14,7 +14,7 @@ const app = express();
 const port = process.env.PORT || 8080;
 
 app.use(cookieParser());
-app.use(cors());
+app.use(cors({credentials: true, origin: true}));
 
 app.use(helmet());
 app.use(bodyParser.json());
