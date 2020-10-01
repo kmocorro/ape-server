@@ -3,6 +3,7 @@ let config = require('../config').jwt_secret;
 
 function verifyToken(req, res, next){
     let token = req.headers.authorization;
+    console.log(req.headers);
     console.log(token);
 
     if(!token){
