@@ -259,7 +259,8 @@ module.exports = function(app){
           if(err){return reject(err)}
           connection.query({
             // status = 1 means complete.
-            sql: 'UPDATE ape_employee_flow SET status=1 WHERE flow_id = 1 AND employee_number =?',
+            // flow_id = 8 means COHEN/hads
+            sql: 'UPDATE ape_employee_flow SET status=1 WHERE flow_id = 8 AND employee_number =?',
             values: [ fields.employee_number ]
           }, (err, results) => {
             if(err){reject(err)}
