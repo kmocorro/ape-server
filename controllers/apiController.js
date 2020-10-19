@@ -7,6 +7,40 @@ let mysqlAPE = require('../config').poolAPE;
 
 module.exports = function(app){
 
+  app.post('/api/checkstatus', (req, res) => {
+    let employee_number = req.body.employee_number;
+    //console.log(employee_number)
+    if(employee_number){
+      checkAPEstatus(employee_number);
+    }
+
+    function checkAPEstatus(employee_number){
+      return new Promise((resolve, reject) => {
+        mysqlAPE.getConnection((err, connection) => {
+          if(err){return reject(err)}
+          connection.query({
+            sql: 'SELECT * FROM ape_employee_flow WHERE employee_number = ?',
+            values: [ employee_number ]
+          }, (err, results) => {
+            if(err){return reject(err)}
+            if(results.length>0){
+              res.json({
+                employee_number: employee_number,
+                flow: results
+              });
+            }else{
+              res.json({
+                employee_number: employee_number,
+                flow: results
+              });
+            }
+          })
+          connection.release();
+        })
+      })
+    }
+  })
+
   app.post('/api/employee', verifyToken, (req, res) => {
     let fields = req.claim;
     console.log(fields);
