@@ -34,10 +34,7 @@ module.exports = function(app){
                 let profile = {profile: {
                     claim: {
                       employeeNumber: user.employeeNumber,
-                      nickName: nickName_array[0],
                       displayName: user.displayName,
-                      title: user.title,
-                      department: user.department,
                       username: user.sAMAccountName
                   }
                 }}
