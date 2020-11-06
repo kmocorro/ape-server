@@ -4,6 +4,7 @@ let XLSX = require('xlsx');
 let mysql = require('../config').pool;
 let moment = require('moment');
 let mysqlAPE = require('../config').poolAPE;
+let mysqlMaxeon = require('../config').poolMaxeon;
 
 module.exports = function(app){
 
@@ -398,4 +399,31 @@ module.exports = function(app){
 
   })
 
+  // CWW
+  app.post('/api/cww', (req, res) => {
+
+    let fields = req.body;
+    if(fields.employee_number){
+      console.log(fields);
+      insertCWW(fields);
+    }
+
+    function insertCWW(fields){
+      return new Promise((resolve, reject) => {
+        mysqlMaxeon.getConnection((err, connection) => {
+          if(err){return reject(err)}
+          connection.query({
+            sql: 'INSERT INTO hr_cww SET dt =?, employee_number =? , decision =?, status=?',
+            values: [ new Date(), fields.employee_number, fields.decision, 1 ]
+          }, (err, results) => {
+            if(err){return reject(err)}
+            if(results.length>0){
+              resolve(results)
+            }
+          })
+          connection.release()
+        })
+      })
+    }
+  })
 }
