@@ -421,7 +421,7 @@ module.exports = function(app){
             values: [ new Date(), fields.employee_number, fields.decision, 1 ]
           }, (err, results) => {
             if(err){return reject(err)}
-            if(results.length>0){
+            if(results){
               resolve(results)
             }
           })
