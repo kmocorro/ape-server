@@ -30,8 +30,18 @@ module.exports = function(app){
                 let jsonToken = {token: token};
                 
                 //res.cookie('auth_jwt', token); // auth_jwt - authenticated user jsonwebtoken
-                console.log(jsonToken);
-                res.status(200).json(jsonToken);
+                //console.log(jsonToken);
+                let profile = {profile: {
+                    claim: {
+                      employeeNumber: user.employeeNumber,
+                      nickName: nickName_array[0],
+                      displayName: user.displayName,
+                      title: user.title,
+                      department: user.department,
+                      username: user.sAMAccountName
+                  }
+                }}
+                res.status(200).json(jsonToken, profile);
             }
         })(req, res);
 
