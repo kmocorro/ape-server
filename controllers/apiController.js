@@ -405,7 +405,11 @@ module.exports = function(app){
     let fields = req.body;
     if(fields.employee_number){
       console.log(fields);
-      insertCWW(fields);
+      insertCWW(fields).then((results) => {
+        res.status(200).json({success: results});
+      }, (err) => {
+        res.status(401).json({err: err});
+      });
     }
 
     function insertCWW(fields){
