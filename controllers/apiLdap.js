@@ -27,10 +27,6 @@ module.exports = function(app){
             } else {
 
                 let token = generateJWT(user);
-                let jsonToken = {token: token};
-                
-                //res.cookie('auth_jwt', token); // auth_jwt - authenticated user jsonwebtoken
-                //console.log(jsonToken);
                 let profile = {profile: {
                     claim: {
                       employeeNumber: user.employeeNumber,
@@ -38,7 +34,11 @@ module.exports = function(app){
                       username: user.sAMAccountName
                   }
                 }}
-                res.status(200).json(jsonToken, profile);
+                let jsonToken = {token: token, profile};
+                
+                //res.cookie('auth_jwt', token); // auth_jwt - authenticated user jsonwebtoken
+                //console.log(jsonToken);
+                res.status(200).json(jsonToken);
             }
         })(req, res);
 
