@@ -77,7 +77,14 @@ module.exports = function(app){
           checkAPEstatus(fields);
         }else{
           registerEmployee(fields).then(() => {
-            checkAPEstatus(fields);
+            checkAPEstatus(fields).then((results) => {
+              insertCOHENwithForce(fields).then((insertResults) => {
+                res.json({
+                  profile: fields,
+                  flow: results
+                });
+              })
+            });
           })
         }
       })
@@ -134,13 +141,29 @@ module.exports = function(app){
                 flow: results
               });
             }else{
-              res.json({
-                profile: fields,
-                flow: results
-              });
+              resolve(results)
+              // res.json({
+              //   profile: fields,
+              //   flow: results
+              // });
             }
           })
           connection.release();
+        })
+      })
+    }
+
+    function insertCOHENwithForce(fields){
+      return new Promise((resolve, reject) => {
+        mysqlAPE.getConnection((err, connection) => {
+          if(err){return reject(err)}
+          connection.query({
+            sql: 'INSERT INTO ape_emploee_flow SET employee_number = ?, dt=?, flow_id =?',
+            values: [fields.employeeNumber, new Date(), 8]
+          }, (err, results) => {
+            if(err) {return reject(err)}
+            resolve(results)
+          })
         })
       })
     }
