@@ -126,7 +126,7 @@ module.exports = function(app){
         mysqlAPE.getConnection((err, connection) => {
           if(err){return reject(err)}
           connection.query({
-            sql: 'INSERT INTO ape_emploee_flow SET employee_number = ?, dt=?, flow_id =?',
+            sql: 'INSERT INTO ape_employee_flow SET employee_number = ?, dt=?, flow_id =?',
             values: [fields.employeeNumber, new Date(), 8]
           }, (err, results) => {
             if(err) {return reject(err)}
