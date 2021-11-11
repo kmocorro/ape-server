@@ -130,8 +130,11 @@ module.exports = function(app){
             values: [fields.employeeNumber, new Date(), 8]
           }, (err, results) => {
             if(err) {return reject(err)}
-            resolve(results)
+            if(results.length > 0) {
+              resolve(results)
+            }
           })
+          connection.release();
         })
       })
     }
