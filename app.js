@@ -11,11 +11,11 @@ const adminLogin = require('./controllers/adminLogin');
 const apiController = require('./controllers/apiController');
  
 const app = express();
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 7001;
 
 app.use(cookieParser());
 app.use(cors());
-app.options('*', cors());
+//app.options('*', cors());
 
 app.use(helmet());
 app.use(bodyParser.json());
