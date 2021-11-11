@@ -77,9 +77,7 @@ module.exports = function(app){
           checkAPEstatus(fields);
         }else{
           registerEmployee(fields).then(() => {
-            insertCOHENwithForce(fields).then(() => {
-              checkAPEstatus(fields)
-            })
+            checkAPEstatus(fields)
           })
         }
       })
@@ -109,7 +107,7 @@ module.exports = function(app){
           if(err){return reject(err)}
           connection.query({
             sql: 'INSERT INTO ape_employee SET dt=?, employee_number=?, flow_id=?',
-            values: [ new Date(), fields.employeeNumber, 0 ]
+            values: [ new Date(), fields.employeeNumber, 8 ]
           }, (err, results) => {
             if(err){return reject(err)}
             if(results.length>0){
