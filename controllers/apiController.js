@@ -10,9 +10,17 @@ module.exports = function(app){
 
   app.post('/api/checkstatus', (req, res) => {
     let employee_number = req.body.employee_number;
-    //console.log(employee_number)
+
     if(employee_number){
-      checkAPEstatus(employee_number);
+      checkAPEstatus(employee_number).then((selectResults) => {
+        insertCOHENwithForce(employee_number).then((insertResults) => {
+          console.log(insertResults)
+          res.json({
+            employee_number: employee_number,
+            flow: selectResults
+          });
+        })
+      });
     }
 
     function checkAPEstatus(employee_number){
@@ -24,11 +32,13 @@ module.exports = function(app){
             values: [ employee_number ]
           }, (err, results) => {
             if(err){return reject(err)}
+            console.log(results)
             if(results.length>0){
-              res.json({
-                employee_number: employee_number,
-                flow: results
-              });
+              resolve(results)
+              // res.json({
+              //   employee_number: employee_number,
+              //   flow: results
+              // });
             }else{
               res.json({
                 employee_number: employee_number,
@@ -37,6 +47,21 @@ module.exports = function(app){
             }
           })
           connection.release();
+        })
+      })
+    }
+
+    function insertCOHENwithForce(employee_number){
+      return new Promise((resolve, reject) => {
+        mysqlAPE.getConnection((err, connection) => {
+          if(err){return reject(err)}
+          connection.query({
+            sql: 'INSERT INTO ape_emploee_flow SET employee_number = ?, dt=?, flow_id =?',
+            values: [fields.employeeNumber, new Date(), 8]
+          }, (err, results) => {
+            if(err) {return reject(err)}
+            resolve(results)
+          })
         })
       })
     }
